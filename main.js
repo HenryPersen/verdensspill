@@ -6,6 +6,8 @@ const pointoffset = 3
 const campos = [0,0]
 const camspeed = 15
 
+console.log("Tester Git hjemmefra")
+
 class nation{
     constructor(id, name, states){
         this.id = id
