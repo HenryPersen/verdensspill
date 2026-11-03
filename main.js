@@ -1,22 +1,32 @@
 
-let zoomfactor = 75
+let zoomfactor = 40
 const zoomspeed = 0.01
 const body = document.body
 const pointoffset = 3
 const campos = [0,0]
 const camspeed = 15
 
-console.log("Tester Git hjemmefra")
-
 class nation{
-    constructor(id, name, states){
+    constructor(id, name, states, color){
         this.id = id
         this.name = name
         this.states = states
+        this.color = color
         this.faction = null
         this.ideology = "None"
     }
+    setstatesowner(){
+        for(let stateid of this.states){
+            console.log(getstatebyid(stateid))
+            state = getstatebyid(stateid)
+            state.owner = this
+            state.setcolor(this.color)
+        }
+        renderstates()
+    }
 }
+
+
 
 
 class state{
@@ -27,6 +37,13 @@ class state{
         this.position = position
         this.neighbors = neighbors
         this.htmltag = null
+        this.owner = null
+    }
+    setcolor(color){
+        if(this.htmltag != null){
+            
+            this.htmltag.style.fill = color
+        }
     }
 }
 
@@ -35,14 +52,28 @@ let states = [
     new state(2, "TestState2", [[0.5, 1.2], [0.8, -0.7] ,[-0.2, -0.7], [-0.5, 1.4]], [3,4], []),
     new state(3, "TestState3", [[0.8, 1.3], [0.8, -0.7] ,[-0.8, -0.7], [-2.0, 1.5], [-0.2, 1.3]], [3,2], []),
     new state(4, "TestState4", [[0.3, 0.5], [0.5, -0.5] ,[-1.2, -1.7], [-1.5, 0.2]], [5,5], []),
-    new state(4, "TestState4", [[0.5, 1.5], [-1.2, 0.3] ,[-1.2, -1.7]], [5,3], []),
+    new state(5, "TestState5", [[0.5, 1.5], [-1.2, 0.3] ,[-1.2, -1.7]], [5,3], []),
+    new state(6, "TestState6", [[0.5, 1.5], [-1.2, 0.3] ,[-1.2, -1.7], [0.3, -0.8], [0.9, 0.5]], [15,12], []),
+    new state(7, "TestState7", [[1.5, 0.5], [-1.3, 0.7] ,[-0.2, -0.7]], [14,13], []),
+    new state(8, "TestState8", [[1.5, -0.5], [-0.8, 1.4] ,[-1.3, -0.3]], [14,14], []),
 ]
+
+function getstatebyid(id){
+    for(let state of states){
+        if(state.id == id){
+            return state
+        } else {
+            console.log("Found no state with id: " + String(id))
+        }
+    }
+}
 
 function zoom(event){
     console.log(event.deltaY)
     zoomfactor += event.deltaY * zoomspeed
     renderstates()
 }
+
 body.addEventListener("keydown", function (event) {
     console.log(event)
     if(event.key == "ArrowUp"){
@@ -63,11 +94,23 @@ body.addEventListener("keydown", function (event) {
 
 body.onwheel = zoom
 
+let nations = [
+    new nation(1, "France", [1,2,3], "#3e2dd6"),
+    new nation(2, "Germany", [4,5], "#8d7e7e"),
+    new nation(3, "Rattania", [6,7,8], "#0e6d16"),
+]
+
+
 
 window.onload = function()
-{
+{   
     renderstates()
+    for(let nationstate of nations){
+        console.log("setting state owners")
+        nationstate.setstatesowner()
+    }
 };
+
 
 function renderstates(){
     body.innerHTML = ""
@@ -88,20 +131,20 @@ function renderstates(){
         statesvgtag.style.left = (state.position[0] + pointoffset * 0) * zoomfactor + campos[0] + "px" 
         statesvgtag.style.top = (state.position[1] + pointoffset * 0) * zoomfactor + campos[1] + "px"
         
-        polygon.style.fill = "whitesmoke"
+        state.htmltag = polygon
+        if(state.owner != null){
+            state.setcolor(state.owner.color)
+        }
         polygon.addEventListener("click", stateclicked)
         
         body.appendChild(statesvgtag)
+        
 
     }
 }
 
 function stateclicked(){
     state = this
-    console.log(state.style.fill)
-    if(state.style.fill == "whitesmoke"){
-        state.style.fill = "red"
-    } else {
-        state.style.fill = "whitesmoke"
-    }
+    console.log(this)
+    //state.style.fill = "#ffff00"
 }
