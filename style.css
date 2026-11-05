@@ -4,6 +4,18 @@ body{
     height:100%;
     overflow: hidden;
 }
+#infobar{
+    background-color: rgb(84, 84, 84);
+    width: 25%;
+    float:right;
+    height: 100vh;
+    color: whitesmoke;
+    visibility: hidden;
+}
+#infobar p{
+    margin-left: 2vw;
+    margin-top: 2vw;
+}
 polygon{
     stroke: black;
     display:flex;

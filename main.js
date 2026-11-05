@@ -5,6 +5,9 @@ const body = document.body
 const pointoffset = 3
 const campos = [0,0]
 const camspeed = 15
+let currentnation = null
+const infobar = document.getElementById("infobar")
+let selectedstate = null
 
 class nation{
     constructor(id, name, states, color){
@@ -48,7 +51,7 @@ class state{
 }
 
 let states = [
-    new state(1, "TestState1", [[0.5, 1.4], [0.8, -0.7] ,[-1.0, -0.5], [-0.5, 0.5]], [2,4], []),
+    new state(1, "Paris", [[0.5, 1.4], [0.8, -0.7] ,[-1.0, -0.5], [-0.5, 0.5]], [2,4], []),
     new state(2, "TestState2", [[0.5, 1.2], [0.8, -0.7] ,[-0.2, -0.7], [-0.5, 1.4]], [3,4], []),
     new state(3, "TestState3", [[0.8, 1.3], [0.8, -0.7] ,[-0.8, -0.7], [-2.0, 1.5], [-0.2, 1.3]], [3,2], []),
     new state(4, "TestState4", [[0.3, 0.5], [0.5, -0.5] ,[-1.2, -1.7], [-1.5, 0.2]], [5,5], []),
@@ -62,10 +65,9 @@ function getstatebyid(id){
     for(let state of states){
         if(state.id == id){
             return state
-        } else {
-            console.log("Found no state with id: " + String(id))
         }
     }
+    console.log("Found no state with id: " + String(id))
 }
 
 function zoom(event){
@@ -100,6 +102,14 @@ let nations = [
     new nation(3, "Rattania", [6,7,8], "#0e6d16"),
 ]
 
+function getstatebypolygon(polygon){
+    for(let state of states){
+        if(state.htmltag == polygon){
+            return state
+        }
+    }
+    console.log("found no state with polygon " + polygon)
+}
 
 
 window.onload = function()
@@ -113,8 +123,11 @@ window.onload = function()
 
 
 function renderstates(){
-    body.innerHTML = ""
     for (let state of states) {
+        if(state.htmltag != null){
+            state.htmltag.remove()
+            state.htmltag = null
+        }
         var statesvgtag = document.createElementNS("http://www.w3.org/2000/svg", "svg")
         //statesvgtag.style.width = 100 * zoomfactor + "px"
         //statesvgtag.style.height = 100 * zoomfactor + "px"
@@ -144,7 +157,13 @@ function renderstates(){
 }
 
 function stateclicked(){
-    state = this
+
+    state = getstatebypolygon(this)
+    console.log(state)
+    infobar.innerHTML = ""
     console.log(this)
-    //state.style.fill = "#ffff00"
+    infobar.style.visibility = "visible"
+    let statename = document.createElement("p")
+    statename.innerHTML = state.name
+    infobar.appendChild(statename)
 }
