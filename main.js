@@ -59,6 +59,10 @@ let states = [
     new state(6, "TestState6", [[0.5, 1.5], [-1.2, 0.3] ,[-1.2, -1.7], [0.3, -0.8], [0.9, 0.5]], [15,12], []),
     new state(7, "TestState7", [[1.5, 0.5], [-1.3, 0.7] ,[-0.2, -0.7]], [14,13], []),
     new state(8, "TestState8", [[1.5, -0.5], [-0.8, 1.4] ,[-1.3, -0.3]], [14,14], []),
+    new state(9, "TestState9", [[-0.5, 0.4], [-1.2, 1.2] ,[-1.5, -0.5]], [3,5], []),
+    new state(10, "TestState10", [[0.5, 1.5], [-1.2, 0.2] ,[-0.5, -0.6], [0.5, -0.8]], [3,6], []),
+    new state(11, "TestState11", [[0.5, 0.5], [0.8, 2.2], [-0.9, -0.2] ,[0, -0.5]], [1,4], []),
+    new state(12, "TestState12", [[0.5, -0.5], [-0.8, 0.7] ,[-1.2, -1.8]], [3,8], []),
 ]
 
 function getstatebyid(id){
@@ -100,6 +104,7 @@ let nations = [
     new nation(1, "France", [1,2,3], "#3e2dd6"),
     new nation(2, "Germany", [4,5], "#8d7e7e"),
     new nation(3, "Rattania", [6,7,8], "#0e6d16"),
+    new nation(4, "Dagestan", [9,10,11,12], "#323232"),
 ]
 
 function getstatebypolygon(polygon){
