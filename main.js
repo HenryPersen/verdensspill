@@ -162,13 +162,32 @@ function renderstates(){
 }
 
 function stateclicked(){
-
-    state = getstatebypolygon(this)
+    showstateinfo(this)
+}
+function showstateinfo(state){
+    state = getstatebypolygon(state)
     console.log(state)
     infobar.innerHTML = ""
     console.log(this)
+    infobar.style.padding = "5px"
     infobar.style.visibility = "visible"
-    let statename = document.createElement("p")
+    let statename = document.createElement("h1")
     statename.innerHTML = state.name
     infobar.appendChild(statename)
+    let stateownername = document.createElement("p")
+    if(state.owner != null){
+        stateownername.innerHTML = "owned by " + state.owner.name
+    } else {
+        stateownername.innerHTML = "This state is unowned"
+    }
+    infobar.appendChild(stateownername)
+    if(currentnation == null){
+        let selectnationbutton = document.createElement("button")
+        selectnationbutton.innerHTML = "Select Nation"
+        selectnationbutton.addEventListener("click", function(){
+            currentnation = state.owner
+        })
+        infobar.appendChild(selectnationbutton)
+    }
+    
 }
